@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- タイトル -->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="【この買い物、本当に価値がある？】"
+            android:textStyle="bold"
+            android:padding="8dp"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="購入金額と給与を入力して、その商品を買うために必要な労働時間を計算しましょう。"
+            android:padding="5dp"
+            android:textSize="15dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="0dp">
+
+            <ImageView
+                android:id="@+id/image_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="0dp"
+                android:src="@drawable/bag"
+                />
+
+            <!-- 購入金額入力 -->
+            <EditText
+                android:id="@+id/purchaseAmountInput"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:hint="購入金額を入力"
+                android:textSize="20dp"
+                android:inputType="numberDecimal" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="0dp">
+
+            <ImageView
+                android:id="@+id/image_money"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="0dp"
+                android:src="@drawable/money"
+                />
+
+            <!-- 給料種別選択 -->
+            <RadioGroup
+                android:id="@+id/salaryTypeGroup"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/hourlyWageOption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="時給" />
+
+                <RadioButton
+                    android:id="@+id/monthlySalaryOption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="月給" />
+
+                <RadioButton
+                    android:id="@+id/annualSalaryOption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:text="年収" />
+            </RadioGroup>
+
+        </LinearLayout>
+
+
+        <!-- 時給入力 -->
+        <LinearLayout
+            android:id="@+id/hourlyWageLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/hourlyWageInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="時給を入力"
+                android:textSize="18dp"
+                android:inputType="numberDecimal" />
+
+        </LinearLayout>
+
+        <!-- 月給入力 -->
+        <LinearLayout
+            android:id="@+id/monthlySalaryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/monthlySalaryInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="月給を入力"
+                android:textSize="18dp"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/monthlyWorkHoursInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1ヶ月の総労働時間\n参考 法定労働時間：177時間"
+                android:textSize="18dp"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+        <!-- 年収入力 -->
+        <LinearLayout
+            android:id="@+id/annualSalaryLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <EditText
+                android:id="@+id/annualSalaryInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="年収を入力"
+                android:textSize="18dp"
+                android:inputType="numberDecimal" />
+
+            <EditText
+                android:id="@+id/annualWorkHoursInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1年の総労働時間\n参考 法定労働時間：2,085時間"
+                android:textSize="18dp"
+                android:inputType="numberDecimal" />
+        </LinearLayout>
+
+
+        <!-- 結果表示 -->
+        <TextView
+            android:id="@+id/resultView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:text="↓↓ 結果はこちらに表示 ↓↓"
+            android:textSize="18dp"
+            android:padding="8dp" />
+
+
+        <!-- ボタン 1段目 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/calculateButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="10dp"
+                app:backgroundTint="@null"
+                android:text="計算"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:background="@drawable/round_button"/>
+
+            <Button
+                android:id="@+id/clearButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="10dp"
+                app:backgroundTint="@null"
+                android:text="消去"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:background="@drawable/round_button_red"/>
+
+        </LinearLayout>
+
+        <!-- ボタン 2段目 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="10dp"
+                app:backgroundTint="@null"
+                android:text="保存"
+                android:textColor="#444444"
+                android:textStyle="bold"
+                android:background="@drawable/round_button_gray"/>
+
+            <Button
+                android:id="@+id/historyButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="10dp"
+                app:backgroundTint="@null"
+                android:text="履歴"
+                android:textColor="#444444"
+                android:textStyle="bold"
+                android:background="@drawable/round_button_gray"/>
+
+            <Button
+                android:id="@+id/settingsButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="10dp"
+                app:backgroundTint="@null"
+                android:text="設定"
+                android:textColor="#444444"
+                android:textStyle="bold"
+                android:background="@drawable/round_button_gray"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
