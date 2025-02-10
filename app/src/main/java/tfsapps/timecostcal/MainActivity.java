@@ -1,5 +1,7 @@
 package tfsapps.timecostcal;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText annualWorkHoursInput;
     private TextView resultView;
 
+    static int _exec_func_code = 0;     //確認ダイアログの実行処理コード
+
     // Constants
     private static final String PREFS_NAME = "TimeCostPrefs";
     private static final String HISTORY_KEY = "calculation_history";
@@ -56,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         Button calculateButton = findViewById(R.id.calculateButton);
         Button saveButton = findViewById(R.id.saveButton);
         Button historyButton = findViewById(R.id.historyButton);
-        Button settingsButton = findViewById(R.id.settingsButton);
+        //Button settingsButton = findViewById(R.id.settingsButton);
         Button clearButton = findViewById(R.id.clearButton);
 
 
@@ -92,10 +96,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void saveCalculationResult() {
         String resultText = resultView.getText().toString();
+
         if (resultText.isEmpty() || !resultText.contains("購入金額")) {
             Toast.makeText(this, "有効な計算結果がありません。", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        ShowConfirmPopup(1);
+    }
+    private void saveCalculationResultExec() {
+
+        String resultText = resultView.getText().toString();
 
         try {
             // 購入金額と労働時間を抽出
@@ -105,9 +116,13 @@ public class MainActivity extends AppCompatActivity {
 
             for (String line : lines) {
                 if (line.contains("購入金額")) {
-                    purchaseAmount = parseInputToDouble(line.replaceAll("[^\\d.]", ""));
+//                    purchaseAmount = parseInputToDouble(line.replaceAll("[^\\d.]", ""));
+                    purchaseAmount = parseInputToDouble(line.replaceAll("[^\\d]", ""));
+//                    purchaseAmount = safeParseDouble(line);
                 } else if (line.contains("労働時間")) {
-                    laborTime = Double.parseDouble(line.replaceAll("[^\\d.]", ""));
+//                    laborTime = Double.parseDouble(line.replaceAll("[^\\d.]", ""));
+                    laborTime = parseInputToDouble(line.replaceAll("[^\\d.]", ""));
+//                    laborTime = safeParseDouble(line);
                 }
             }
 
@@ -160,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 double monthlySalary = parseInputToDouble(monthlySalaryInput.getText().toString());
                 double monthlyWorkHours = parseInputToDouble(monthlyWorkHoursInput.getText().toString());
                 if (monthlyWorkHours <= 0){
+                    ShowErrorPopup(1);
                     return; //計算できない
                 }
                 hourlyWage = monthlySalary / monthlyWorkHours;
@@ -168,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                 double annualSalary = parseInputToDouble(annualSalaryInput.getText().toString());
                 double annualWorkHours = parseInputToDouble(annualWorkHoursInput.getText().toString());
                 if (annualWorkHours <= 0){
+                    ShowErrorPopup(1);
                     return; //計算できない
                 }
                 hourlyWage = annualSalary / annualWorkHours;
@@ -178,14 +195,19 @@ public class MainActivity extends AppCompatActivity {
 
             /* 計算できない場合、実施しない */
             if (purchaseAmount <= 0 || hourlyWage <= 0){
+                ShowErrorPopup(2);
                 return;
             }
 
             DecimalFormat formatter = new DecimalFormat("#,##0");
             String formattedAmount = formatter.format(purchaseAmount);
             String result = String.format(
-                    "購入金額:\n　▶︎ %s円\n時給:\n　▶︎ %s円\n購入に必要な労働時間:\n　▶︎ %.2f時間",
+                    "購入金額　　 ▶︎ %s円\n時給　　　　 ▶︎ %s円\n必要労働時間 ▶︎ %.2f時間",
                     formattedAmount, hourlyWageText, timeCost);
+
+//            String result = String.format(
+//                    "購入金額:\n　▶︎ %s円\n時給:\n　▶︎ %s円\n購入に必要な労働時間:\n　▶︎ %.2f時間",
+//                    formattedAmount, hourlyWageText, timeCost);
             resultView.setText(result);
         } catch (NumberFormatException e) {
             resultView.setText("すべてのフィールドに正しい数値を入力してください。");
@@ -242,4 +264,101 @@ public class MainActivity extends AppCompatActivity {
         }
         return Double.parseDouble(input.replaceAll(",", ""));
     }
+
+    /**
+     * 文字列から安全に数値を抽出するメソッド
+     */
+    private double safeParseDouble(String text) {
+        if (text == null || text.isEmpty()) {
+            return 0;
+        }
+
+        // 正規表現で数値部分のみ抽出
+        String numStr = text.replaceAll("[^0-9.]", "");
+
+        try {
+            return Double.parseDouble(numStr);
+        } catch (NumberFormatException e) {
+            return 0; // パースに失敗した場合は 0 を返す
+        }
+    }
+
+    private void ShowConfirmPopup(int code) {
+
+        String ttl = "";
+        String mess = "";
+
+        switch (code) {
+            case 1:
+                ttl = "！保存確認";
+                mess = "\n\n【計算結果】を履歴データとして保存しますか？\n" +
+                        "\n" +
+                        "\n\n" +
+                        "\n\n\n";
+                _exec_func_code = code;
+                break;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(ttl);
+        builder.setMessage(mess);
+        builder.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (_exec_func_code == 1){
+                    saveCalculationResultExec();
+                }
+            }
+        });
+        builder.setNegativeButton("いいえ", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
+    }
+
+    private void ShowErrorPopup(int errcode) {
+
+        String ttl = "";
+        String mess = "";
+
+        switch (errcode) {
+            case 1:
+                ttl = "！入力確認";
+                mess = "\n\n【労働時間】を確認してください\n" +
+                        "\n" +
+                        "\n\n" +
+                        "\n\n\n";
+                break;
+            case 2:
+                ttl = "！入力確認";
+                mess = "\n\n【購入金額】や【給与:時給/月給/年収】を確認してください\n" +
+                        "\n" +
+                        "\n\n" +
+                        "\n\n\n";
+                break;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(ttl);
+        builder.setMessage(mess);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+//        builder.setNegativeButton("　後で　", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                dialog.dismiss();
+//            }
+//        });
+        builder.setCancelable(false);
+        builder.show();
+    }
+
 }

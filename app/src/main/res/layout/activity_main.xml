@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bakground"
     tools:context=".MainActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -127,7 +128,7 @@
                 android:id="@+id/hourlyWageInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="時給を入力"
+                android:hint="時給を入力\n参考 1150円の場合：1,150"
                 android:textSize="18dp"
                 android:inputType="numberDecimal" />
 
@@ -146,7 +147,7 @@
                 android:id="@+id/monthlySalaryInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="月給を入力"
+                android:hint="月給を入力\n参考 30万円の場合：300,000"
                 android:textSize="18dp"
                 android:inputType="numberDecimal" />
 
@@ -154,7 +155,7 @@
                 android:id="@+id/monthlyWorkHoursInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="1ヶ月の総労働時間\n参考 法定労働時間：177時間"
+                android:hint="1ヶ月の総労働時間を入力\n参考 法定労働時間：177時間"
                 android:textSize="18dp"
                 android:inputType="numberDecimal" />
         </LinearLayout>
@@ -172,7 +173,7 @@
                 android:id="@+id/annualSalaryInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="年収を入力"
+                android:hint="年収を入力\n参考 450万の場合：4,500,000"
                 android:textSize="18dp"
                 android:inputType="numberDecimal" />
 
@@ -180,7 +181,7 @@
                 android:id="@+id/annualWorkHoursInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="1年の総労働時間\n参考 法定労働時間：2,085時間"
+                android:hint="1年の総労働時間を入力\n参考 法定労働時間：2,085時間"
                 android:textSize="18dp"
                 android:inputType="numberDecimal" />
         </LinearLayout>
@@ -275,6 +276,7 @@
                 android:textStyle="bold"
                 android:background="@drawable/round_button_gray"/>
 
+            <!--
             <Button
                 android:id="@+id/settingsButton"
                 android:layout_width="0dp"
@@ -289,6 +291,7 @@
                 android:textColor="#444444"
                 android:textStyle="bold"
                 android:background="@drawable/round_button_gray"/>
+                -->
         </LinearLayout>
     </LinearLayout>
 
