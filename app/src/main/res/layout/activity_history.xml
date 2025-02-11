@@ -5,11 +5,45 @@
     android:orientation="vertical"
     android:padding="16dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="0dp">
+
+        <TextView
+            android:id="@+id/info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:text="これまでに「保存」した履歴を表示しています。\nリスト項目の「長押し」で履歴を消去できます。"
+            android:textColor="#cc0000"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:paddingBottom="8dp" />
+
+        <ImageButton
+            android:id="@+id/image_item"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="0dp"
+            android:background="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/back"
+            />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/totalPurchaseView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="総購入金額: 0円"
+        android:text="(合計)購入金額: 0円"
         android:textSize="18sp"
         android:textStyle="bold"
         android:paddingBottom="8dp" />
@@ -18,7 +52,7 @@
         android:id="@+id/totalTimeView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="総労働時間: 0時間"
+        android:text="(合計)労働時間: 0時間"
         android:textSize="18sp"
         android:textStyle="bold"
         android:paddingBottom="8dp" />
@@ -27,7 +61,8 @@
         android:id="@+id/historyListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" />
+        android:listSelector="#ffffcc"
+        android:divider="#aaaaaa"
+        android:dividerHeight="2dp" />
 </LinearLayout>
 

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -37,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText annualWorkHoursInput;
     private TextView resultView;
 
-    static int _exec_func_code = 0;     //確認ダイアログの実行処理コード
+    private int _exec_func_code = 0;     //確認ダイアログの実行処理コード
+    private int LISTMAX = 10;
 
     // Constants
     private static final String PREFS_NAME = "TimeCostPrefs";
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
 
         purchaseAmountInput = findViewById(R.id.purchaseAmountInput);
@@ -60,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         Button calculateButton = findViewById(R.id.calculateButton);
         Button saveButton = findViewById(R.id.saveButton);
         Button historyButton = findViewById(R.id.historyButton);
-        //Button settingsButton = findViewById(R.id.settingsButton);
+        Button TipsButton = findViewById(R.id.TipsButton);
         Button clearButton = findViewById(R.id.clearButton);
 
 
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        TipsButton.setOnClickListener(v -> Tips());
     }
 
     private void saveCalculationResult() {
@@ -137,13 +141,9 @@ public class MainActivity extends AppCompatActivity {
             JSONArray historyArray = new JSONArray(historyJson);
 
             // 最大100件を保持
-            if (historyArray.length() >= 10) {
+            if (historyArray.length() >= LISTMAX) {
                 historyArray.remove(0);
             }
-            // 最大100件を保持
-//            if (historyArray.length() >= 100) {
-//                historyArray.remove(0);
-//            }
 
             JSONObject newEntry = new JSONObject();
             newEntry.put("purchaseAmount", purchaseAmount);
@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             double timeCost = purchaseAmount / hourlyWage;
+            double timeCostDay = timeCost / 8;
 
             /* 計算できない場合、実施しない */
             if (purchaseAmount <= 0 || hourlyWage <= 0){
@@ -202,8 +203,8 @@ public class MainActivity extends AppCompatActivity {
             DecimalFormat formatter = new DecimalFormat("#,##0");
             String formattedAmount = formatter.format(purchaseAmount);
             String result = String.format(
-                    "購入金額　　 ▶︎ %s円\n時給　　　　 ▶︎ %s円\n必要労働時間 ▶︎ %.2f時間",
-                    formattedAmount, hourlyWageText, timeCost);
+                    "購入金額　　 ▶︎ %s円\n時給　　　　 ▶︎ %s円\n必要労働時間 ▶︎ %.2f時間\n　(1日8時間労働  %.2f日)",
+                    formattedAmount, hourlyWageText, timeCost, timeCostDay);
 
 //            String result = String.format(
 //                    "購入金額:\n　▶︎ %s円\n時給:\n　▶︎ %s円\n購入に必要な労働時間:\n　▶︎ %.2f時間",
@@ -222,6 +223,50 @@ public class MainActivity extends AppCompatActivity {
         monthlyWorkHoursInput.setText("");
         annualWorkHoursInput.setText("");
         resultView.setText("↓↓ 結果はこちらに表示 ↓↓");
+        Toast.makeText(this, "画面をクリアしました。", Toast.LENGTH_SHORT).show();
+    }
+
+    private void Tips(){
+
+        String ttl = "";
+        String mess = "";
+
+        ttl = "！労働時間(参考値)";
+        mess = "\n\n【労働時間】について確認下さい！\n" +
+                "\n"+
+                "\n【法定労働時間】"+
+                "\n労働基準法によって「1日8時間・週40時間」と定められた労働時間の上限となります。"+
+                "\n" +
+                "\n\n【週当たり】"+
+                "\n　1日 8時間 × 5日  = 40 時間\n" +
+                "\n\n【月当たり】 ※31日の場合"+
+                "\n　31日 ÷ 7日(1週間)   = 4.42 週" +
+                "\n　4.42週 × 40時間(週)  = 177 時間 \n" +
+                "\n\n【年当たり】"+
+                "\n　365日 ÷ 7日(1週間)   = 52.14 週 " +
+                "\n　52.14週 × 40時間(週) = 2085 時間 " +
+                "\n"+
+                "\n　年休105日の場合"+
+                "\n　　365日 - 105日 = 260日 " +
+                "\n　　260日 × 8時間 = 2080 時間" +
+                "\n"+
+                "\n　年休120日の場合" +
+                "\n　　365日 - 120日 = 245日 " +
+                "\n　　245日 × 8時間 = 1960 時間" +
+                "\n\n"+
+                "\n\n";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(ttl);
+        builder.setMessage(mess);
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setCancelable(false);
+        builder.show();
     }
 
     private void addCommaFormatting(EditText editText) {

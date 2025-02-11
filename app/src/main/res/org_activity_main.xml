@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -8,14 +9,9 @@
     android:background="@drawable/bakground"
     tools:context=".MainActivity">
 
-    <ScrollView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -28,7 +24,7 @@
             android:text="【この買い物、本当に価値がある？】"
             android:textStyle="bold"
             android:padding="8dp"
-            android:textSize="19dp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/subtitle"
@@ -36,7 +32,7 @@
             android:layout_height="wrap_content"
             android:text="購入金額と給与を入力して、その商品を買うために必要な労働時間を計算しましょう。"
             android:padding="5dp"
-            android:textSize="16dp" />
+            android:textSize="15dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -161,7 +157,7 @@
                 android:id="@+id/monthlyWorkHoursInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="1ヶ月の総労働時間を入力\n法定労働時間(換算)：177時間"
+                android:hint="1ヶ月の総労働時間を入力\n法定労働時間(換算)：177時間\n詳細は[Tips]を確認下さい"
                 android:textSize="18dp"
                 android:inputType="numberDecimal" />
         </LinearLayout>
@@ -187,7 +183,7 @@
                 android:id="@+id/annualWorkHoursInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="1年の総労働時間を入力\n法定労働時間(換算)：2,085時間"
+                android:hint="1年の総労働時間を入力\n法定労働時間(換算)：2,085時間\n詳細は[Tips]を確認下さい"
                 android:textSize="18dp"
                 android:inputType="numberDecimal" />
         </LinearLayout>
@@ -298,8 +294,6 @@
                 android:background="@drawable/round_button_gray"/>
         </LinearLayout>
     </LinearLayout>
-
-    </ScrollView>
 
 
 
