@@ -1,8 +1,10 @@
 package tfsapps.timecostcal;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,13 +25,22 @@ public class HistoryActivity extends AppCompatActivity {
     private JSONArray historyArray;
     private HistoryAdapter adapter;
     private ListView historyListView;
+    private ImageButton btnback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_history);
+
+        btnback = findViewById(R.id.image_back);
+        btnback.setOnClickListener(v -> BackMenu());
         HistoryDisplay();
+    }
+
+    public void BackMenu(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     public void HistoryDisplay(){

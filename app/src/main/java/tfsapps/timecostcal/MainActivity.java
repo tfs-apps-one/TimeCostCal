@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
         addCommaFormatting(monthlySalaryInput);
         addCommaFormatting(annualSalaryInput);
 
+        addCommaTimeFormatting(monthlyWorkHoursInput);
+        addCommaTimeFormatting(annualWorkHoursInput);
+
         salaryTypeGroup.setOnCheckedChangeListener((group, checkedId) -> {
             findViewById(R.id.hourlyWageLayout).setVisibility(View.GONE);
             findViewById(R.id.monthlySalaryLayout).setVisibility(View.GONE);
@@ -286,6 +289,40 @@ public class MainActivity extends AppCompatActivity {
                 if (!s.toString().equals(current)) {
                     editText.removeTextChangedListener(this);
 
+                    String cleanString = s.toString().replaceAll("[, ¥]", "");
+                    try {
+                        double parsed = Double.parseDouble(cleanString);
+                        String formatted = "¥ " + new DecimalFormat("#,##0").format(parsed);
+                        current = formatted;
+                        editText.setText(formatted);
+                        editText.setSelection(formatted.length());
+                    } catch (NumberFormatException e) {
+                        current = "";
+                    }
+
+                    editText.addTextChangedListener(this);
+                }
+            }
+        });
+    }
+
+    private void addCommaTimeFormatting(EditText editText) {
+        editText.addTextChangedListener(new TextWatcher() {
+            private String current = "";
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().equals(current)) {
+                    editText.removeTextChangedListener(this);
+
                     String cleanString = s.toString().replaceAll(",", "");
                     try {
                         double parsed = Double.parseDouble(cleanString);
@@ -303,11 +340,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+
     private double parseInputToDouble(String input) {
         if (input == null || input.isEmpty()) {
             return 0;
         }
-        return Double.parseDouble(input.replaceAll(",", ""));
+        return Double.parseDouble(input.replaceAll("[, ¥]", ""));
     }
 
     /**
